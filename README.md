@@ -34,40 +34,61 @@ Finally, you can import your .pth file into the **RUGS** open `Tools -> Gaussian
 
 ## Experiments and Results
 
+
+
+<p align="center" width="100%"><h4 align="center">Reconstruction of both real and virtual scenes</h4></p>
+<figure>
+<p align="center" width="100%">
+  <img src="https://github.com/user-attachments/assets/87d7fe86-c3f7-44f0-b12f-0c8421f25564" alt="image" style="width:80%">
+  </p>
+</figure>
+
 <p align="center" width="100%"><h4 align="center">Relighting with different environment maps</h4></p>
 <figure>
 <p align="center" width="100%">
-  <img src="https://github.com/user-attachments/assets/7481347b-bb7a-4bb4-9e78-a08dcb23228c" alt="image" style="width:80%">
+  <img src="https://github.com/user-attachments/assets/24781d4d-6e37-4b55-878f-7e5d38f98ac1" alt="image" style="width:80%">
   </p>
 </figure>
 
 <p align="center" width="100%"><h4 align="center">Different point-light properties</h4></p>
 <figure>
 <p align="center" width="100%">
-  <img src="https://github.com/user-attachments/assets/36bc4a21-fe78-4fb1-b24f-ab110e2ec1f0" alt="image" style="width:80%">
+  <img src="https://github.com/user-attachments/assets/3c013c7f-7d02-4e19-b5e2-5ab59084195a" alt="image" style="width:80%">
   </p>
 </figure>
 
 <p align="center" width="100%"><h4 align="center">Comparation of relighting between GS-IR and RUGS</h4></p>
 <figure>
 <p align="center" width="100%">
-  <img src="https://github.com/user-attachments/assets/534bad8f-c7c8-4c24-a148-887ed22151f1" alt="image" style="width:80%">
+  <img src="https://github.com/user-attachments/assets/69ca8999-36e0-4af5-b8a9-83c348ded467" alt="image" style="width:80%">
   </p>
 </figure>
 
 <p align="center" width="100%"><h4 align="center">Curves</h4></p>
 <figure>
 <p align="center" width="100%">
-  <img src="https://github.com/user-attachments/assets/a83f7a48-9b32-44c5-80f9-1acd374764d6" alt="image" style="width:80%">
+  <img src="https://github.com/user-attachments/assets/76f9b749-b04a-430e-a400-e356c67f34a2" alt="image" style="width:80%">
+  </p>
+</figure>
+
+<p align="center" width="100%"><h4 align="center">Hybrid Rendering</h4></p>
+<figure>
+<p align="center" width="100%">
+  <img src="https://github.com/user-attachments/assets/83d570f0-e76e-4d99-8a3b-09985eb3a5ac" alt="image" style="width:80%">
   </p>
 </figure>
 
 <p align="center" width="100%"><h4 align="center">My dormitory</h4></p>
 <figure>
 <p align="center" width="100%">
-  <img src="https://github.com/user-attachments/assets/11d4646a-40aa-47a7-8c8a-9955e2d2403f" alt="image" style="width:80%">
+  <img src="https://github.com/user-attachments/assets/2a265d7f-6d47-4805-afb8-66803b663a64" alt="image" style="width:80%">
   </p>
 </figure>
 
-For the specific implementation process, please refer to the [graduation thesis](https://github.com/ReV3nus/RUGS/blob/main/%E5%8F%AF%E9%87%8D%E5%85%89%E7%85%A73D%E9%AB%98%E6%96%AF%E9%87%8D%E5%BB%BA%E4%B8%8E%E6%B8%B2%E6%9F%93-%E9%92%B1%E9%9F%A6%E5%85%8B.pdf).
+## Demo Video:
 
+https://github.com/user-attachments/assets/3d124d48-545d-42f9-b679-f711dccf28c7
+
+---
+
+For the specific implementation process or if meet any issues while reimplementing it, feel free to contact me.
