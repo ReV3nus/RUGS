@@ -200,17 +200,6 @@ namespace GaussianSplatting.Runtime
                 _ => throw new ArgumentOutOfRangeException(nameof(format), format, null)
             };
         }
-        public static GraphicsFormat VectorFormatToGraphics(VectorFormat format)
-        {
-            return format switch
-            {
-                VectorFormat.Float32 => GraphicsFormat.R32G32B32_SFloat,
-                VectorFormat.Norm16 => GraphicsFormat.R16G16B16_SFloat,
-                VectorFormat.Norm11 => GraphicsFormat.R16G16B16_SFloat,
-                VectorFormat.Norm6 => GraphicsFormat.R8G8B8_UNorm,
-                _ => throw new ArgumentOutOfRangeException(nameof(format), format, null)
-            };
-        }
 
 
         public static long CalcPosDataSize(int splatCount, VectorFormat formatPos)

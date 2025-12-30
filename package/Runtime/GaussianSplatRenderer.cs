@@ -316,7 +316,7 @@ namespace GaussianSplatting.Runtime
 
         Texture m_GpuAlbedoData;
         Texture m_GpuMaterialData;
-        Texture m_GpuNormalData;
+        GraphicsBuffer m_GpuNormalData;
 
 
         public Cubemap m_EnvIrradianceMap;
@@ -490,11 +490,9 @@ namespace GaussianSplatting.Runtime
             texMaterial.Apply(false, true);
             m_GpuMaterialData = texMaterial;
 
-            var normFormat = GaussianSplatAsset.VectorFormatToGraphics(asset.posFormat);
-            var texNormal = new Texture2D(texWidth, texHeight, normFormat, TextureCreationFlags.DontInitializePixels | TextureCreationFlags.IgnoreMipmapLimit | TextureCreationFlags.DontUploadUponCreate) { name = "GaussianNormalData" };
-            texNormal.SetPixelData(asset.normalData.GetData<byte>(), 0);
-            texNormal.Apply(false, true);
-            m_GpuNormalData = texNormal;
+            m_GpuNormalData = new GraphicsBuffer(GraphicsBuffer.Target.Raw | GraphicsBuffer.Target.CopySource, (int)(asset.normalData.dataSize / 4), 4) { name = "GaussianNormalData" };
+            m_GpuNormalData.SetData(asset.normalData.GetData<uint>());
+
 
 
 
@@ -651,7 +649,7 @@ namespace GaussianSplatting.Runtime
             cmb.SetComputeTextureParam(cs, kernelIndex, Props.SplatColor, m_GpuColorData);
             cmb.SetComputeTextureParam(cs, kernelIndex, Props.SplatAlbedo, m_GpuAlbedoData);
             cmb.SetComputeTextureParam(cs, kernelIndex, Props.SplatMaterial, m_GpuMaterialData);
-            cmb.SetComputeTextureParam(cs, kernelIndex, Props.SplatNormal, m_GpuNormalData);
+            cmb.SetComputeBufferParam(cs, kernelIndex, Props.SplatNormal, m_GpuNormalData);
 
             if (m_GSEffects)
             {
@@ -700,7 +698,7 @@ namespace GaussianSplatting.Runtime
             mat.SetTexture(Props.SplatColor, m_GpuColorData);
             mat.SetTexture(Props.SplatAlbedo, m_GpuAlbedoData);
             mat.SetTexture(Props.SplatMaterial, m_GpuMaterialData);
-            mat.SetTexture(Props.SplatNormal, m_GpuNormalData);
+            mat.SetBuffer(Props.SplatNormal, m_GpuNormalData);
 
 
 
@@ -748,7 +746,7 @@ namespace GaussianSplatting.Runtime
             DestroyImmediate(m_GpuColorData);
             DestroyImmediate(m_GpuAlbedoData);
             DestroyImmediate(m_GpuMaterialData);
-            DestroyImmediate(m_GpuNormalData);
+            //DestroyImmediate(m_GpuNormalData);
 
             DisposeBuffer(ref m_GpuPosData);
             DisposeBuffer(ref m_GpuOtherData);

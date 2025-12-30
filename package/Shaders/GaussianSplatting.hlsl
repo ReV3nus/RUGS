@@ -331,7 +331,7 @@ SplatBufferDataType _SplatSH;
 Texture2D _SplatColor;
 Texture2D _SplatAlbedo;
 Texture2D _SplatMaterial;
-Texture2D _SplatNormal;
+SplatBufferDataType _SplatNormal;
 uint _SplatFormat;
 
 // Match GaussianSplatAsset.VectorFormat
@@ -424,6 +424,21 @@ float3 LoadSplatPosValue(uint index)
     return LoadAndDecodeVector(_SplatPos, index * stride, fmt);
 }
 
+float3 LoadSplatNormalValue(uint index)
+{
+    uint fmt = _SplatFormat & 0xFF;
+    uint stride = 0;
+    if (fmt == VECTOR_FMT_32F)
+        stride = 12;
+    else if (fmt == VECTOR_FMT_16)
+        stride = 6;
+    else if (fmt == VECTOR_FMT_11)
+        stride = 4;
+    else if (fmt == VECTOR_FMT_6)
+        stride = 2;
+    return LoadAndDecodeVector(_SplatNormal, index * stride, fmt);
+}
+
 float3 LoadSplatPos(uint idx)
 {
     float3 pos = LoadSplatPosValue(idx);
@@ -446,7 +461,7 @@ half4 LoadSplatColTex(uint3 coord)
 SplatPBRData LoadPBRData(uint3 coord)
 {
     SplatPBRData res = (SplatPBRData)0;
-    res.normal = _SplatNormal.Load(coord);
+    //res.normal = _SplatNormal.Load(coord);
     res.albedo = _SplatAlbedo.Load(coord);
     float2 material = _SplatMaterial.Load(coord);
     res.roughness = material.x;
@@ -495,6 +510,7 @@ SplatData LoadSplatData(uint idx)
     half4 col = LoadSplatColTex(coord);
 
     s.pbr = LoadPBRData(coord);
+    s.pbr.normal = LoadSplatNormalValue(idx);
 
     uint shIndex = idx;
     if (shFormat > VECTOR_FMT_6)

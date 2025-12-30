@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
 
+using GaussianSplatting.Editor.Utils;
+using GaussianSplatting.Runtime;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using GaussianSplatting.Editor.Utils;
-using GaussianSplatting.Runtime;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
@@ -1026,48 +1026,39 @@ namespace GaussianSplatting.Editor
 
 
         [BurstCompile]
-        struct CreateNormalDataJob : IJobParallelFor
+        struct CreateNormalsDataJob : IJobParallelFor
         {
             [ReadOnly] public NativeArray<InputSplatData> m_Input;
-            [NativeDisableParallelForRestriction] public NativeArray<float3> m_Output;
+            public GaussianSplatAsset.VectorFormat m_Format;
+            public int m_FormatSize;
+            [NativeDisableParallelForRestriction] public NativeArray<byte> m_Output;
 
-            public void Execute(int index)
+            public unsafe void Execute(int index)
             {
-                var splat = m_Input[index];
-                int i = SplatIndexToTextureIndex((uint)index);
-                m_Output[i] = new float3(splat.nor.x, splat.nor.y, splat.nor.z);
+                byte* outputPtr = (byte*)m_Output.GetUnsafePtr() + index * m_FormatSize;
+                EmitEncodedVector(m_Input[index].nor, outputPtr, m_Format);
             }
         }
 
         void CreateNormalData(NativeArray<InputSplatData> inputSplats, string filePath, ref Hash128 dataHash)
         {
-            var (width, height) = GaussianSplatAsset.CalcTextureSize(inputSplats.Length);
-            NativeArray<float3> data = new(width * height, Allocator.TempJob);
+            int dataLen = inputSplats.Length * GaussianSplatAsset.GetVectorSize(m_FormatPos);
+            dataLen = NextMultipleOf(dataLen, 8); // serialized as ulong
+            NativeArray<byte> data = new(dataLen, Allocator.TempJob);
 
-            CreateNormalDataJob job = new CreateNormalDataJob();
-            job.m_Input = inputSplats;
-            job.m_Output = data;
+            CreateNormalsDataJob job = new CreateNormalsDataJob
+            {
+                m_Input = inputSplats,
+                m_Format = m_FormatPos,
+                m_FormatSize = GaussianSplatAsset.GetVectorSize(m_FormatPos),
+                m_Output = data
+            };
             job.Schedule(inputSplats.Length, 8192).Complete();
 
             dataHash.Append(data);
-            dataHash.Append((int)m_FormatPos);
 
-            GraphicsFormat gfxFormat = GaussianSplatAsset.VectorFormatToGraphics(m_FormatPos);
-            int dstSize = (int)GraphicsFormatUtility.ComputeMipmapSize(width, height, gfxFormat);
-
-            ConvertNormalJob jobConvert = new ConvertNormalJob
-            {
-                width = width,
-                height = height,
-                inputData = data,
-                format = m_FormatPos,
-                outputData = new NativeArray<byte>(dstSize, Allocator.TempJob),
-                formatBytesPerPixel = dstSize / width / height
-            };
-            jobConvert.Schedule(height, 1).Complete();
             using var fs = new FileStream(filePath, FileMode.Create, FileAccess.Write);
-            fs.Write(jobConvert.outputData);
-            jobConvert.outputData.Dispose();
+            fs.Write(data);
 
             data.Dispose();
         }
