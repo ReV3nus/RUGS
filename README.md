@@ -89,6 +89,10 @@ Finally, you can import your .pth file into the **RUGS** open `Tools -> Gaussian
 
 https://github.com/user-attachments/assets/3d124d48-545d-42f9-b679-f711dccf28c7
 
+## Update Log
+
+- 1.0.1: Modified formats of normals data. This should fix the problem that some graphic cards doesn't support R16G16B16_SFloat.
+
 ---
 
 For the specific implementation process or if meet any issues while reimplementing it, feel free to contact me.
