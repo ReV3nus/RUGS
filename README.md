@@ -27,7 +27,7 @@ Finally, you can import your .pth file into the **RUGS** open `Tools -> Gaussian
 
 <figure>
 <p align="center" width="100%">
-  <img src="https://github.com/user-attachments/assets/186dfcc7-c838-4d65-bd09-d4d626869094" alt="image" style="width:60%">
+  <img src="https://github.com/user-attachments/assets/3d9ca538-9486-4b44-a183-d789994366a0" alt="image" style="width:60%">
   <p align="center" width="100%"><text align="text:center">Configuration</text></p>
   </p>
 </figure>
@@ -92,6 +92,8 @@ https://github.com/user-attachments/assets/3d124d48-545d-42f9-b679-f711dccf28c7
 ## Update Log
 
 - 1.0.1: Modified formats of normals data. This should fix the problem that some graphic cards doesn't support R16G16B16_SFloat.
+
+- 1.0.2: Modified data strcture in the file `package/Editor/Utils/GaussianFileReader.cs`. Now this will match the original GS-IR's data strcture.
 
 ---
 
